@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template
 
+RAZORPAY_KEY_ID=""
+RAZORPAY_KEY_SECRET=""
+
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///products.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATION']=False
@@ -37,6 +40,18 @@ def purchase():
 @app.route("/contact")
 def contactus():
     return render_template("contact.html")
+
+@app.route("/success")
+def success():
+    return render_template("success.html")
+
+@app.route("/checkout")
+def checkout():
+    return render_template("checkout.html")
+
+@app.route("/checkout", methods=['POST'])
+def payout():
+    return render_template("checkout.html")
 
 
 if __name__=="__main__":

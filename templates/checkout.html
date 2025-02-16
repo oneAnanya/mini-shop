@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>orders</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h2>"keep ur preferance"</h2>
+    <!-- make one product card, with delivery status  -->
+     <div>
+        <img src="https://images.app.goo.gl/1y3jkM3CmL2d18BQA" alt="product image" width="200px" height="200px">
+        <h2>Flower Vase</h2>
+        <p>Price:$999.90</p>
+        <p>Description:This is a high-quality product that you will love.</p>
+        <p><strong>Delivery Status: In Transit</strong></p>
+        <button id="rzp-button">Buy Now</button>
+     </div>
+    <script>
+        document.getElementById('rzp-button').onclick= function(e){
+            fetch('/checkout', {method: 'POST'})
+                .then(resonse => resonse.json())
+                .then(order => {
+                    const options = {
+                        "key" : "{{ key_id }}",
+                        "amount" : order.amount,
+                        "name": "miniShop",
+                        "description": "Payment for order #" + order.order_id,
+                        "order_id": order.order_id,
+                        "callback_url": "/verify"
+                    };
+
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                })
+                .catch(err => alert("Error creating order!"))
+        };
+    </script>
+</body>
+</html>
